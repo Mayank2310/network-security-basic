@@ -1,4 +1,4 @@
-open terminal to setps environmeny and use this command--> "conda create -p venv python==3.10"
+open terminal to setup the environment and use this command --> "conda create -p venv python==3.10"
 
 now activate the environemnt --> "conda activate venv/"
 
