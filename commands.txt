@@ -1,0 +1,27 @@
+open terminal to setps environmeny and use this command--> "conda create -p venv python==3.10"
+
+now activate the environemnt --> "conda activate venv/"
+
+"pip install -r requirements.txt" to install the packages
+
+create the projects folders like notebooks, networksecurity, network_data
+
+the open Github and link your project folder
+
+open terminal and wirte "git init"
+
+"git add ."
+
+"git commit -m "[any commit-name]" "
+
+"git branch -M main "
+
+" git remote add origin https://github.com/YOUR-Github_PROFILE_URL .GIT"
+
+"git push -u origin main "
+
+"-e . --> it means that it refers to the setup.py file and will execute the setup.py file "
+
+run this in terminal " pip install -r requirements.txt" -->  this will install the packages and will create Network_Security.egg-info and inside that.txt files like pkg.info,top_level,sources.txt and more.
+
+
