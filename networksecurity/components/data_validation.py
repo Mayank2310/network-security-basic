@@ -64,7 +64,7 @@ class DataValidation:
             ## Create Directory
 
             dir_path = os.path.dirname(drift_report_file_path)
-            os.mkdir(dir_path,exist_ok=True)
+            os.makedir(dir_path,exist_ok=True)
             write_yaml_file(file_path=drift_report_file_path,content=report)
 
         except Exception as e:
@@ -97,6 +97,10 @@ class DataValidation:
             os.makedirs(dir_path,exist_ok=True)
 
             train_dataframe.to_csv(
+                self.data_validation_config.valid_train_file_path, index=False, header=True
+            )
+
+            test_dataframe.to_csv(
                 self.data_validation_config.valid_test_file_path, index=False, header=True
             )
 
