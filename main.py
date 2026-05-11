@@ -14,8 +14,8 @@ if __name__ == "__main__":
 
     try:
         trainingpipelineconfig = TrainingPipelineConfig()
-        data_ingestionconfig = DataIngestionConfig(trainingpipelineconfig)
-        data_ingestion = DataIngestion(data_ingestionconfig)
+        dataingestionconfig = DataIngestionConfig(trainingpipelineconfig)
+        data_ingestion = DataIngestion(dataingestionconfig)
         logging.info("Initiate The Data Ingestion")
         dataingestionartifact = data_ingestion.initiate_data_ingestion()
         logging.info("Data Initiation Completed")
