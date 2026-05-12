@@ -20,6 +20,8 @@ open terminal and wirte "git init"
 
 "git push -u origin main "
 
+"git push -u origin main --force" --> to force the push into Github
+
 "-e . --> it means that it refers to the setup.py file and will execute the setup.py file "
 
 run this in terminal " pip install -r requirements.txt" -->  this will install the packages and will create Network_Security.egg-info and inside that.txt files like pkg.info,top_level,sources.txt and more.

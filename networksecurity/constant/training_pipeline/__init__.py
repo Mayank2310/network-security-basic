@@ -6,7 +6,8 @@ import pandas as pd
 """
 Defining common constant variable for training pipeline
 """
-TARGET_COLUMN = "Result"
+
+TARGET_COLUMN = "CLASS_LABEL"
 PIPELINE_NAME: str = "NetworkSecurity"
 ARTIFACT_DIR: str = "Artifacts"
 FILE_NAME: str ="Phishing_data.csv"
@@ -40,6 +41,7 @@ DATA_VALIDATION_VALID_DIR: str = "validated"
 DATA_VALIDATION_INVALID_DIR: str = "invalid"
 DATA_VALIDATION_DRIFT_REPORT_DIR: str = "drift_report"
 DATA_VALIDATION_REPORT_FILE_NAME: str = "report.yaml"
+PREPROCESSING_OBJECT_FILE_NAME: str = "preprocessing.pkl"
 
 
 """
