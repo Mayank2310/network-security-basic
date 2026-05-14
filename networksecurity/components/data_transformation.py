@@ -59,10 +59,6 @@ class DataTransformation:
             return processor
         except Exception as e:
             raise NetworkSecurityException(e,sys)
-
-        except Exception as e:
-            raise NetworkSecurityException(e,sys)
-
     
 
     def initiate_data_transforamtion(self)->DataTransformationArtifact:

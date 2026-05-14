@@ -24,6 +24,8 @@ from sklearn.ensemble import(
     RandomForestRegressor,
 )
 
+import mlflow
+
 
 
 
@@ -36,9 +38,21 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
 
+    def track_mlflow(self,best_model,classifiactionmetric):
+        with mlflow.start_run():
+            f1_score = classifiactionmetric.f1_score
+            precision_score=classifiactionmetric.precision_score
+            recall_score=classifiactionmetric.recall_score
+
+            mlflow.log_metric("f1_score",f1_score)
+            mlflow.log_metric("precision",precision_score)
+            mlflow.log_metric("recall_score",recall_score)
+            mlflow.sklearn.log_model(best_model,"model")
+
     
     def train_model(self,X_train,y_train,x_test,y_test):
-        models = {
+        try:
+            models = {
                 "Random Forest" : RandomForestRegressor(verbose=1),
                 "Decision Tree" : DecisionTreeClassifier(),
                 "Gradient Boosting" : GradientBoostingClassifier(verbose=1),
@@ -46,15 +60,16 @@ class ModelTrainer:
                 "AdaBoost" : AdaBoostClassifier(),
             }
         
-        params={
+            params={
             "Decision Tree": {
                 'criterion' : ['gini', 'entropy', 'log_loss'],
                 # 'splitter' : ['best', 'random'],
                 # 'max_features' : ['sqrt', 'log2'],
             },
 
-            "Random Forest": {
-                #  'criterion' : ['gini', 'entropy', 'log_loss'],
+            "Random Forest" : {
+                #'criterion' : ['absolute_error', 'poisson', 'squared_error', 'friedman_mse'],
+                'criterion' : ['gini', 'entropy', 'log_loss'],
                 
                 # 'max_features' : ['sqrt', 'log2', 'None'],
                 'n_estimators' : [8,16,32,64,128,256]
@@ -76,48 +91,53 @@ class ModelTrainer:
                 'n_estimator':[8,16,32,64,128,256]
             }
 
-        }
+            }
 
-        model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=x_test,y_test=y_test,
+            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=x_test,y_test=y_test,
                                         models=models,param=params)
         
-        ## To get best model SCORE from dict
+         ## To get best model SCORE from dict
 
-        best_model_score = max(sorted(model_report.values()))
+            best_model_score = max(sorted(model_report.values()))
 
         ## To get best model name from dict
 
-        best_model_name = list(model_report.keys())[
+            best_model_name = list(model_report.keys())[
             list(model_report.values()).index(best_model_score)
-        ]
+            ]
 
-        best_model = models[best_model_name]
-        y_train_pred = best_model.predict(X_train)
+            best_model = models[best_model_name]
+            y_train_pred = best_model.predict(X_train)
 
-        classification_train_metric = get_classification_score(y_true=y_train,y_pred=y_train_pred)
+            classification_train_metric = get_classification_score(y_true=y_train,y_pred=y_train_pred)
 
-        #track the mlflow
+            ## track the mlflow
 
-        y_test_pred = best.model.predict(x_test)
-        classification_test_metric = get_classification_score(y_true=y_test,y_pred=y_test_pred)
+            self.track_mlflow(best_model,classification_train_metric)
+            self.track_mlflow(best_model,classification_test_metric)
 
-        preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
+            y_test_pred = best.model.predict(x_test)
+            classification_test_metric = get_classification_score(y_true=y_test,y_pred=y_test_pred)
+
+            preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
 
 
-        model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
-        os.makedirs(model_dir_path,exist_ok=True)
+            model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
+            os.makedirs(model_dir_path,exist_ok=True)
 
-        Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
-        save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel)
+            Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
+            save_object(self.model_trainer_config.trained_model_file_path,obj=NetworkModel)
 
-        ## Model Trainer Artifact
-        model_trainer_artifact=ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
+            ## Model Trainer Artifact
+            model_trainer_artifact=ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                              train_metric_artifact=classification_train_metric,
                              test_metric_artifact=classification_test_metric
                              )
         
-        logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
-        return model_trainer_artifact
+            logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
+            return model_trainer_artifact
+        except Exception as e:
+            raise NetworkSecurityException(e,sys)
     
 
 
