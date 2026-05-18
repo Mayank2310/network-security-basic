@@ -64,6 +64,8 @@ class DataIngestion:
 
     def split_data_as_train_test(self,dataframe: pd.DataFrame):
         try:
+            logging.info(f"DataFrame shape before splitting {dataframe.shape}")
+            print(f"DEBUG: Your Dataset has {dataframe.shape[0]} rows and {dataframe.shape[1]} columns.")
             train_set, test_set = train_test_split(
                 dataframe, test_size=float(self.data_ingestion_config.train_test_split_ratio)
             )

@@ -69,6 +69,7 @@ class DataTransformation:
             test_df=DataTransformation.read_data(self.data_validation_artifact.valid_test_file_path)
 
             ## training Dataframe
+            print(f"Available columns : {train_df.columns.tolist()}")
             input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN],axis=1)
             target_feature_train_df = train_df[TARGET_COLUMN]
             target_feature_train_df = target_feature_train_df.replace(-1,0)

@@ -68,8 +68,8 @@ class ModelTrainer:
             },
 
             "Random Forest" : {
-                #'criterion' : ['absolute_error', 'poisson', 'squared_error', 'friedman_mse'],
-                'criterion' : ['gini', 'entropy', 'log_loss'],
+                'criterion' : ['absolute_error', 'poisson', 'squared_error', 'friedman_mse'],
+                #'criterion' : ['gini', 'entropy', 'log_loss'],
                 
                 # 'max_features' : ['sqrt', 'log2', 'None'],
                 'n_estimators' : [8,16,32,64,128,256]
